@@ -1,0 +1,177 @@
+* CEQ /kek/ California Environmental Quadtree
+
+CEQ is a naming scheme for a common set of regular coverages for California.
+These coverages are quadtree decompositions of the state, using the California
+Albers grid [[https://spatialreference.org/ref/epsg/3310/][EPSG:3310]], the most standard grid for mapping Statewide Natural
+resources.  The unit measure for the quadtree is the kilometer, but grid
+designations can to be at finer scales, (but always at a binary division of a
+km; eg. (1/2)=500m, (1/4)=250m, (1/8)=125m).
+
+CEQ is similar in some ways to the [[http://gis.co.dakota.mn.us/content/dakco/usng/mapdocuments/USNG%2520Standard%2520Maps.pdf][US National Grid]], but more simple
+since it only covers California, and divides the state into squares that often
+have a direct one-to-one correspondance with raster imagery.
+
+** Coverage
+
+CEQ can be used to identify any area within a 2048x2048(km) square centered at
+the origin of the EPSG:3310 projection.
+
+n=0 4^0= 1 = 1*(1+1) + 1*(1+1) = 4
+n=1 4^n= 4 = 2*(2+1) + 2*(2+1) = 12
+16 = 2*4*(4+1) = 40
+N=2*N(N/2+1) = N*(N/2+1)
+
+N=2^n => 2^(n/2) * (2^(n/2)+1)
+
+* CEQ identifers
+
+Every square within these sets of coverages has a unique identifer.  The
+identifiers are unqiue both within the coverage, and throughout all coverages,
+that is no identifer is used to specify a different region in a different
+coverage.
+
+CEQs are identified with an optional scheme identifier, followed by a required
+*Prefix Code* followed by an optional *grid address*.  The *Prefix Code* is a
+single hexidecimal character, and the *grid address* is a string of hexidecimal
+characters optionally also with a period ~.~ followed by a string of base4
+numbers.
+
+Scheme identifiers can be a local designation, an http address or the official
+ark for the CEQ grids.  Typically, the scheme identifier ~ceq:~ is used as a
+local designation. Some example CEQ identifiers are: ~ceq:7~, ~ceq:F~,
+~ceq:0ABC~, and ~ceq:1ABC.3~.  Similar identifiers with specifed schemes
+include: ~ark:/XXXX/Fc/1ABC.3~ and ~https://lab.digital.ucdavis.edu/ceq/1ABC.3~.
+The preferred ~ark:~ identifier for CEQs is ~ark://quinn/isgreat~ .  There is
+no currently preferred URL specification for CEQ identifiers.
+
+** Prefix Codes
+
+The very first Hex term is used
+
+ceq:0 = NE Quadrant
+ceq:1 = SE Quadrant
+ceq:2 = NW Quadrant
+ceq:3 = SW Quadrant
+ceq:7 = All Quadrants
+ceq:F = Out of California
+ceq:E = Error
+
+| F | F | F | F |
+| F | 2 | 0 | F |
+| F | 3 | 1 | F |
+| F | F | F | F |
+
+
+
+** NE Quad Decomposition Naming conventions
+
+When decomposing a region, into the next smaller region, the following quad
+naming scheme is used for the upper quadrant ceq:0
+
+| - | W | E |
+|---+---+---|
+| N | 2 | 3 |
+| S | 0 | 1 |
+
+When you decompse a region mulitple times, you just continue the same naming
+pattern.  The Table below the names of a region decomposed twice.
+
+| -  | WW | WE | EW | EE |
+|----+----+----+----+----|
+| NN | 22 | 23 | 32 | 33 |
+| NS | 20 | 21 | 30 | 31 |
+| SN | 02 | 03 | 12 | 13 |
+| SS | 00 | 01 | 10 | 11 |
+
+Each quadtree composition needs for bits to specify location, so the above table
+are also valid numbers in base4.  These can all be named with a single base16,
+hexidecimal digit.  The following table shows the same designation with
+hexidecimal numbering.
+
+| -  | WW | WE | EW | EE |
+|----+----+----+----+----|
+| NN |  A |  B | E  | F  |
+| NS |  8 |  9 | C  | D  |
+| SN |  2 |  3 | 6  | 7  |
+| SS |  0 |  1 | 4  | 5  |
+
+Grid locations can be specified by either the hexidecimal or base4 names, or by
+a combination of both.  The naming is defined as
+
+ceq:[P][h]*.[f]* where [P] is the prefix code; [h] are the hexidecimal digits;
+and [f] are the base4 digits.  The period '.' in the specification identifies
+when the code switches from hexidecimal to base4.  The prefered notation is to
+use as many hexidecimal codes as possible. For example; ceq:0A.1 is prefered
+over ceq:0.221, although both forms should be accepted by applications using
+these
+
+** Other Quad Nameing conventions
+
+The other quads; ceq:1, ceq:2, and ceq:3, follow a similer nameing convention,
+however, the ordering pattern is reflected accross the X and Y axises based on
+the where the regions lie w.r.t. the origin.
+
+So the naming convention for ceq:1 is:
+
+| - | W | E |
+|---+---+---|
+| N | 3 | 2 |
+| S | 1 | 0 |
+
+ceq:2 is:
+
+| - | W | E |
+|---+---+---|
+| N | 0 | 1 |
+| S | 2 | 3 |
+
+and ceq:3 is:
+
+| - | W | E |
+|---+---+---|
+| N | 1 | 0 |
+| S | 3 | 2 |
+
+The reason for reflecting the ordering over the axis, are so that the method of
+calculating a geographic region from a given ceq: identifier remains the same
+for all quads.  absolute X and Y distances are calculated from grid identifier,
+and the prefix code is used to decide in what direction the distances are
+applied from the origin.  In addtion, the quads go together somewhat more
+sensically, in this case.  The following table shows the first few regions for
+all of California, the origin being at the center,
+
+| 13 | 12 | 02 | 03 |
+| 11 | 10 | 00 | 01 |
+| 31 | 30 | 20 | 21 |
+| 33 | 32 | 22 | 23 |
+
+** ARKS
+
+
+bits  | Hex | size [km] | valid | Example
+--- | --- | --- | --- | ---
+ 4  | 1 | When F = 2048 Otherwise 1024 | F,0,1,2,3
+ 8  | 3 | 256 | ceq:0
+
+
+** Decoding
+
+** Creating TOPOJSON
+
+You can create a topojson file
+
+``` bash
+ceq --topojson --to=output_file.json
+```
+
+** Creating GEOJSON
+
+You can create a geojson file
+
+``` bash
+ceq --geojson --from=input_file [--to=output_file.json] [--include=CEQ]
+```
+
+** Linked data
+
+ceq:F

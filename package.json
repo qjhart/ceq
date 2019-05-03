@@ -1,0 +1,27 @@
+{
+  "name": "ceq",
+  "version": "1.0.0",
+  "description": "California Environmental Quadtree",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qjhart/ceq.git"
+  },
+  "keywords": [
+    "California",
+    "Quadtree",
+    "TopoJSON"
+  ],
+  "author": "Quinn Hart",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/qjhart/ceq/issues"
+  },
+  "homepage": "https://github.com/qjhart/ceq#readme",
+  "dependencies": {
+    "proj4": "^2.5.0"
+  }
+}

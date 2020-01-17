@@ -8,17 +8,23 @@ export class CEQ {
 		// Also a constructor, should be same as below
   static fromNE(ne,level) {
     let n=10;
+    let prefix=0;
 		let center_dis=2**n*1000;    // nth level distance to center
-    console.log(`n:${n} center_dis=${center_dis}`)
     let rat=[ne[0]/center_dis,ne[1]/center_dis];
-    console.error(rat);
     if (Math.abs(rat[0]) > 1 || Math.abs(rat[1]) > 1)
       return('q:F');
-    if
-    console.log(`rat=${rat}`);
+    if (rat[0]>0)
+      prefix |= 0x2;
+    if (rat[1]>0)
+      prefix |= 0x1;
+
+    console.log(`prefix:${prefix},rat=${rat},n=${n},center_dis=${center_dis}`);
+
     return('q:E');
   }
-	static foo(cnl) {
+
+
+  static foo(cnl) {
 		console.log('foo:'+typeof cnl);
 		let level=cnl[1] || 10;
 		let center_dis=2**level*1000;
@@ -41,6 +47,7 @@ export class CEQ {
   constructor(ceq) {
 		console.log('typeof:'+typeof ceq);
 		if (typeof ceq == 'object') {
+      // Later we can check combine from NE above
 			ceq='q:E';
 		}
 		// parse string

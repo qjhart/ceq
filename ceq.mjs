@@ -11,11 +11,25 @@ proj4.defs([
 
 import {CEQ} from './CEQ.mjs';
 
+let q={
+  F:{center:[512000,1024001] },
+	0:{center:[512000,512000],
+         pixel_size:1024000,
+         n:10
+        },
+};
+
 //CEQ.foo([[0,0],5,[22,20]]);
+let i;
+
+for (i in q) {
+  let res=CEQ.fromNE(q[i].center);
+  console.log(`i:${i},res:${res}`);
+}
 
 let test=[
 //		'ceq:7',
-		'q:0',
+	'q:0',
 //		'q:0.0',
 //		'q:0.1',
 //		'q:0.2',

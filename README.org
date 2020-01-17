@@ -205,26 +205,6 @@ all of California, the origin being at the center,
 | 3F | 3E | 3B | 3A | 1A | 1B | 1E | 1F |
 
 
-** First sets of ceq codes
-The following table identifies some of the coarser resolution grid identifiers.
-
-| bits | Pattern  |   size [km] | valid                    | Example      |
-|------+----------+-------------+--------------------------+--------------|
-|    4 | P (EF)   | unspecified | EF                       | ceq:F        |
-|    4 | P (7)    |        2048 | 7                        | ceq:7        |
-|    4 | P [0-3]  |        1024 | [0-3]                    | ceq:0        |
-|    6 | P.f      |         512 | [0-3]\.[0-3]             | ceq:0.3      |
-|    8 | Ph       |         256 | [0-3][0-9,A-F]           | ceq:0C       |
-|   10 | Ph.f     |         128 | [0-3][0-9,A-F]\.[0-3]    | ceq:0C.3     |
-|   12 | Phh      |          64 | [0-3][0-9,A-F]{2}        | ceq:03E      |
-|   14 | Phh.f    |          32 | [0-3][0-9,A-F]{2}\.[0-3] | ceq:333.3    |
-|   16 | Phhh     |          16 | [0-3][0-9,A-F]{3}        | ceq:2EF0     |
-|   18 | Phhh.f   |           8 | [0-3][0-9,A-F]{3}\.[0-3] | ceq:2EF0.0   |
-|   20 | Phhhh    |           4 | [0-3][0-9,A-F]{4}        | ceq:12e43    |
-|   22 | Phhhh.f  |           2 | [0-3][0-9,A-F]{4}\.[0-3] | ceq:12e43.2  |
-|   24 | Phhhhh   |           1 | [0-3][0-9,A-F]{5}        | ceq:45e34b   |
-|   26 | Phhhhh.f |        500m | [0-3][0-9,A-F]{5}\.[0-3] | ceq:45e34b.2 |
-
 ** Decoding
 
 ** Creating TOPOJSON
@@ -288,3 +268,59 @@ complete quadtree, otherwise arc ordering is
 
 When we create topojson files, we have a standard methodology for ordering the
 arcs.
+
+* SQL Implementation
+#+PROPERTY: header-args:sql :engine postgresql :cmdline "service=zones" :tangle yes
+
+DO $$ plv8.elog(NOTICE, "hello there!"); $$ LANGUAGE plv8;
+
+#+BEGIN_SRC sql
+DO $$ return "hello"; $$ LANGUAGE plv8;
+#+END_SRC
+
+#+RESULTS:
+| DO |
+|----|
+
+#+BEGIN_SRC sql
+CREATE FUNCTION plv8_test(keys TEXT[], vals TEXT[]) RETURNS JSON AS $$
+    var o = {};
+    for(var i=0; i<keys.length; i++){
+        o[keys[i]] = vals[i];
+    }
+    return o;
+$$ LANGUAGE plv8 IMMUTABLE STRICT;
+#+END_SRC
+
+#+RESULTS:
+| CREATE FUNCTION |
+|-----------------|
+
+#+BEGIN_SRC sql
+SELECT plv8_test(ARRAY['name', 'age'], ARRAY['Tom', '29']);
+#+END_SRC
+
+#+RESULTS:
+| plv8_test                 |
+|---------------------------|
+| {"name":"Tom","age":"29"} |
+
+#+BEGIN_SRC sql
+CREATE or replace function init_injector(prefix text,js text)
+RETURNS TEXT
+LANGUAGE PLPGSQL AS $PL$
+begin
+EXECUTE FORMAT($FORMAT$
+CREATE OR REPLACE FUNCTION require_%1$s() RETURNS VOID AS $INIT_FUNCTION$
+%2$s
+$INIT_FUNCTION$ LANGUAGE plv8 IMMUTABLE STRICT;
+$FORMAT$,prefix,js);
+return 'require_'||prefix;
+end
+$PL$;
+
+#+END_SRC
+
+#+RESULTS:
+| CREATE FUNCTION |
+|-----------------|

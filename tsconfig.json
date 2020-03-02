@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "es2017",
+    "esModuleInterop":true,
+    "typeRoots": ["@types","./node_modules/@types"]
+  },
+  "references": [{ "path": "./src/Int"},
+                 { "path": "./src/POT"},
+                ]
+
+
+//    "include": [
+//      "./src/**/*",
+//      "./test/**/*"
+//    ]
+}

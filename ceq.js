@@ -8,7 +8,7 @@ proj4.defs([
     ]
   ]);
 
-var CEQ=require('./CEQ.js');
+var CEQ=require('./CEQ');
 
 let q={
   F:{center:[512000,1025000] },

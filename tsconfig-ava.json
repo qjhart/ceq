@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+      "outDir": "./build",
+      "allowJs": true,
+      "target": "es2017",
+      "moduleResolution" : "node",
+      "types":["node"],
+    },
+//    "include": [
+//      "./src/**/*",
+//      "./test/**/*"
+//    ]
+}

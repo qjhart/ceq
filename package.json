@@ -4,7 +4,8 @@
   "description": "California Environmental Quadtree",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "build": "tsc -p ."
   },
   "repository": {
     "type": "git",
@@ -21,7 +22,26 @@
     "url": "https://github.com/qjhart/ceq/issues"
   },
   "homepage": "https://github.com/qjhart/ceq#readme",
+  "jest": {
+    "transform": {
+      ".(ts|tsx)": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ]
+  },
   "dependencies": {
     "proj4": "^2.5.0"
+  },
+  "devDependencies": {
+    "@types/google-apps-script": "^1.0.10",
+    "@types/jest": "^25.1.2",
+    "@types/lodash": "^4.14.149",
+    "jest": "^25.1.0",
+    "ts-jest": "^25.2.0",
+    "typescript": "^3.7.5"
   }
 }

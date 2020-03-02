@@ -154,6 +154,16 @@ hexidecimal numbering.
 | SN |  2 |  3 | 6  | 7  |
 | SS |  0 |  1 | 4  | 5  |
 
+| -   | WWW | WWE | WEW | WEE | EWW | EWW | EEW | EEE |
+|-----+-----+-----+-----+-----+-----+-----+-----+-----|
+| NNN | A.2 | A.3 | B.2 | B.3 | E.2 | E.3 | F.2 | F.3 |
+| NNS | A.0 | A.1 | B.0 | B.2 | E.0 | E.1 | F.0 | F.1 |
+| NSN | 8.2 | 8.3 | 9.2 | 9.3 | C.2 | C.3 | D.2 | D.3 |
+| NSS | 8.0 | 8.1 | 9.0 | 9.1 | C.0 | C.1 | D.0 | D.1 |
+| SNN | 2.2 | 2.3 | 3.2 | 3.3 | 6.2 | 6.3 | 7.2 | 7.3 |
+| SNS | 2.0 | 2.1 | 3.0 | 3.1 | 6.0 | 6.1 | 7.0 | 7.1 |
+| SSN | 0.2 | 0.3 | 1.2 | 1.3 | 4.2 | 4.3 | 5.2 | 5.3 |
+| SSS | 0.0 | 0.1 | 1.0 | 1.1 | 4.0 | 4.1 | 5.0 | 5.1 |
 
 ** Other Quad Prefix Naming conventions
 The other quads; ceq:1, ceq:2, and ceq:3, follow a similer nameing convention,

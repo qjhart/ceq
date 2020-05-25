@@ -244,7 +244,8 @@ export function center_to_ceq(c:[number, number],opt : Options = DefaultOptions 
 
   //
   export function pt_to_ceq(c:[number, number],opt : Options = DefaultOptions ) : string  {
-    let { size = DefaultOptions.size } = opt;
+    let { min = DefaultOptions.min,
+          size = DefaultOptions.size } = opt;
     let n_max: number =10;    // 2^10= 1024, size of 0-3
     let prefix: number = 0 ;
     let i: [Int, Int ];   // Quantized center (by minimum CEQ allowed)
